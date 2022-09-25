@@ -14,10 +14,11 @@ export default class GlobalNavigation extends React.Component{
                     </li>
 
                     <li>
-                        <Link to="/learnset/1">LearnSet</Link>
+                        <Link to="/learnset">LearnSets</Link>
                     </li>
 
                 </ul>
+                
             </nav>
         );
     }

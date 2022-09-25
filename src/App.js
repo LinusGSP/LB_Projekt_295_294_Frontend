@@ -8,6 +8,7 @@ import LearnSet from './LearnSet';
 import Answer from './Answer';
 import Cards from './Cards';
 import Choose from './Choose';
+import NotFound from './NotFound';
 
 
 function App() {
@@ -16,11 +17,13 @@ function App() {
 
       <Route path='/' element={<Layout />}>
         <Route index element={<Home />}/>
-        <Route path='learnset/:learnset_id/' element={<LearnSet />}>
+        <Route path='learnset/:learnset_id' element={<LearnSet />}>
           <Route path='answer' element={<Answer />}/>
           <Route path='cards' element={<Cards />}/>
           <Route path='choice' element={<Choose />}/>
         </Route>
+        <Route path='notfound' element={<NotFound />}/>
+        <Route path='*' element={<NotFound />}/>
       </Route>
     </Routes>
   );

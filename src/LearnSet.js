@@ -14,6 +14,7 @@ export default class LearnSet extends React.Component{
     }
     
     componentDidMount(){
+        console.log(window.location.pathname.split("/"));
         const id = window.location.pathname.split("/")[2];                  // Gets the learnset id from the URL
         
         this.setState( { id: id })
@@ -51,9 +52,9 @@ export default class LearnSet extends React.Component{
         // Learning Methods Buttons
         const Links = 
         <>
-            <Link to={"/learnset/" + this.state.id + "/answer"}>Answer Mode</Link>
-            <Link to={"/learnset/" + this.state.id + "/cards"}>Cards Mode</Link>
-            <Link to={"/learnset/" + this.state.id + "/choice"}>Choose Mode</Link>
+            <Link to={"/learnset/" + this.state.id + "/answer"}>Answer Mode</Link><br />
+            <Link to={"/learnset/" + this.state.id + "/cards"}>Cards Mode</Link><br />
+            <Link to={"/learnset/" + this.state.id + "/choice"}>Choose Mode</Link><br />
         </>
 
 

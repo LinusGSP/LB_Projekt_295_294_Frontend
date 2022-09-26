@@ -1,46 +1,33 @@
 import React from "react"
 
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 
-export default class LearnSet extends React.Component{
+
+class LearnSetComponent extends React.Component{
     constructor(props){
         super(props)
         this.state = {
-            id: 0,
+            id: props.id,
             learnSet: {},
             words: [] 
         }
     }
     
     componentDidMount(){
-        console.log(window.location.pathname.split("/"));
-        const id = window.location.pathname.split("/")[2];                  // Gets the learnset id from the URL
-        
-        this.setState( { id: id })
-
         Promise.all([
-            fetch("http://localhost:8080/api/learnset/" + id)               // Fetch Information about the learnset
+            fetch("http://localhost:8080/api/learnset/" + this.state.id)               // Fetch Information about the learnset
                 .then(response => response.json())
-                .then(jsonData => this.setState({learnSet: jsonData})),     // If the words set is not found redirect to page not found
-            fetch("http://localhost:8080/api/word/set/" + id)               // Fetch all words containe in the learnset
+                .then(jsonData => this.setState({learnSet: jsonData})),    
+            fetch("http://localhost:8080/api/word/set/" + this.state.id)               // Fetch all words containe in the learnset
                 .then(response => response.json())
                 .then(jsonData => this.setState({words: jsonData }))
-        ]).catch(() => window.location.assign("/notfound"))
+        ]).catch(() => window.location.assign("/notfound"))                            // If the words set is not found redirect to page not found
     }
-
-    // function from: https://dev.to/jorik/country-code-to-flag-emoji-a21
-    getFlagEmoji = (countryCode) => { 
-        if (!countryCode) {return null }
-        const codePoints = countryCode
-          .toUpperCase()
-          .split('')
-          .map(char =>  127397 + char.charCodeAt());
-        return String.fromCodePoint(...codePoints);
-      }
 
     render(){
         const learnSet = this.state?.learnSet;
+    
         // Learnset Info
         const LearnSetInfo = 
         <>
@@ -52,9 +39,9 @@ export default class LearnSet extends React.Component{
         // Learning Methods Buttons
         const Links = 
         <>
-            <Link to={"/learnset/" + this.state.id + "/answer"}>Answer Mode</Link><br />
-            <Link to={"/learnset/" + this.state.id + "/cards"}>Cards Mode</Link><br />
-            <Link to={"/learnset/" + this.state.id + "/choice"}>Choose Mode</Link><br />
+            <Link to={"/" + this.state.id + "/answer"}>Answer Mode</Link><br />
+            <Link to={"/" + this.state.id + "/cards"}>Cards Mode</Link><br />
+            <Link to={"/" + this.state.id + "/choice"}>Choose Mode</Link><br />
         </>
 
 
@@ -96,4 +83,12 @@ export default class LearnSet extends React.Component{
             </div>
         )
     }
+}
+
+
+export default function LearnSet(props) {
+    let { id } = useParams();
+    return (
+        <LearnSetComponent id={id}/>
+    )
 }

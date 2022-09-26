@@ -22,7 +22,7 @@ export default class Home extends React.Component{
         let display_sets = this.state.learnsets.map(e => {
             return (
                 <div key={e.id}>
-                    <Link to={"/learnset/" + e.id}>{e.name}</Link>
+                    <Link to={"/" + e.id}>{e.name}</Link>
 
                 </div>
             );

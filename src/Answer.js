@@ -4,11 +4,9 @@ import React from "react"
 export default class Answer extends React.Component{
 
 
-    renedr(){
+    render(){
         return (
-            <div>
-                <h1>SIUUU</h1>
-            </div>
+            <h1>Answers</h1>
         )
     }
 }

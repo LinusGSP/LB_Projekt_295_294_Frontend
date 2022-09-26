@@ -2,8 +2,6 @@ import React from "react"
 
 import { Link, useParams } from "react-router-dom";
 
-
-
 class LearnSetComponent extends React.Component{
     constructor(props){
         super(props)
@@ -13,7 +11,7 @@ class LearnSetComponent extends React.Component{
             words: [] 
         }
     }
-    
+
     componentDidMount(){
         Promise.all([
             fetch("http://localhost:8080/api/learnset/" + this.state.id)               // Fetch Information about the learnset
@@ -32,16 +30,17 @@ class LearnSetComponent extends React.Component{
         const LearnSetInfo = 
         <>
             <h1>{learnSet.name}</h1>
-            <h2>{learnSet.language2?.name + " -> " + learnSet.language1?.name}</h2>
+            <h2>{learnSet.language2?.name + " -> " + learnSet.language1?.name}</h2>,
         </>
+
 
 
         // Learning Methods Buttons
         const Links = 
         <>
-            <Link to={"/" + this.state.id + "/answer"}>Answer Mode</Link><br />
-            <Link to={"/" + this.state.id + "/cards"}>Cards Mode</Link><br />
-            <Link to={"/" + this.state.id + "/choice"}>Choose Mode</Link><br />
+            <Link to={"/" + this.state.id + "/answer"} state={{...this.state}}>Answer Mode</Link><br />
+            <Link to={"/" + this.state.id + "/cards"} state={{...this.state}}>Cards Mode</Link><br /> 
+            <Link to={"/" + this.state.id + "/choice"} state={{...this.state}}>Choose Mode</Link><br />
         </>
 
 

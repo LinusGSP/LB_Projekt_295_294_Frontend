@@ -1,12 +1,23 @@
-import React from "react"
+import {React, useState} from "react"
+import { useLocation } from "react-router";
 
 
-export default class Choose extends React.Component{
+export default function Choose(props) {
+    const location = useLocation();
+    const [index, setIndex] = useState(0) 
 
+    const words = location.state.words
+    const learnSet = location.state.learnSet
 
-    render(){
-        return (
-            <h1>Choose</h1>
-        )
+    const handler = () => {
+        setIndex(index + 1)
     }
+
+    return (
+        <div>
+            <h1>{learnSet.name}</h1>
+            <h1>{words[index]?.translation}</h1>
+            <button onClick={handler}>next</button>
+        </div>
+    )
 }

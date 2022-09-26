@@ -18,12 +18,10 @@ export default class Home extends React.Component{
 
 
     render(){
-
         let display_sets = this.state.learnsets.map(e => {
             return (
                 <div key={e.id}>
                     <Link to={"/" + e.id}>{e.name}</Link>
-
                 </div>
             );
         })

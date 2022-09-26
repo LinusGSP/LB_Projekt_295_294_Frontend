@@ -26,12 +26,14 @@ Change Paths:
 
 
 */
+
+
 function App() {
   return (
     <Routes>
       <Route path='/' element={<Layout />}>
         <Route index element={<Home />}/>
-        <Route path='new' element={<CreateLearnSet />}/>
+        <Route path='create' element={<CreateLearnSet />}/>
 
         <Route path=':id' element={<LearnSet />}/>
         <Route path=':id/answer' element={<Answer />}/>
@@ -39,7 +41,7 @@ function App() {
         <Route path=':id/choice' element={<Choose />}/>
 
         <Route path='notfound' element={<NotFound />}/>
-        <Route path='*' element={<NotFound />}/>
+        
       </Route>
     </Routes>
   );

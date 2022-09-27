@@ -13,14 +13,66 @@ class LearnSetComponent extends React.Component{
     }
 
     componentDidMount(){
+        // Get Learnset and word data
         Promise.all([
-            fetch("http://localhost:8080/api/learnset/" + this.state.id)               // Fetch Information about the learnset
+            fetch("http://localhost:8080/api/learnset/" + this.state.id)                // Fetch Information about the learnset
                 .then(response => response.json())
                 .then(jsonData => this.setState({learnSet: jsonData})),    
-            fetch("http://localhost:8080/api/word/set/" + this.state.id)               // Fetch all words containe in the learnset
+            fetch("http://localhost:8080/api/word/set/" + this.state.id)                // Fetch all words contained in the learnset
                 .then(response => response.json())
                 .then(jsonData => this.setState({words: jsonData }))
-        ]).catch(() => window.location.assign("/notfound"))                            // If the words set is not found redirect to page not found
+        ]).catch(() => window.location.assign("/notfound"))                             // If the words set is not found redirect to page not found
+    }
+
+    deleteHandler = (word, index) => {
+        // Delete a word in the table
+        fetch("http://localhost:8080/api/word/" + word.id, {method: "DELETE"})          // Delete word from Database
+            .then(() => 
+                this.setState({words: this.state.words                                  // Remove word from state
+                    .filter((_, i) => { return i !== index })}),
+        )
+    }
+
+    createHandler = () => {
+        // Creates a new Table row with input fields
+
+        const table = document.getElementById("wordTable")
+        var row = table.insertRow(1);
+
+        // create input fields
+        row.insertCell(0).innerHTML = "<input id='inp1' type='text'></input>";
+        row.insertCell(1).innerHTML = "<input id='inp2' type='text'></input>"
+        var _ = row.insertCell(2);
+        row.insertCell(3).innerHTML = "<button id='btn1'>Send</button>"
+
+        // Send Button
+        let btn1 = document.getElementById("btn1")
+        btn1.addEventListener("click", this.sendHandler)
+        
+    }
+
+    sendHandler = () => {
+        // Creates new word object and sends it to the Backend
+        
+        let inp1 = document.getElementById("inp1")
+        let inp2 = document.getElementById("inp2")
+        let newWord = {
+            "translation": inp2.value,
+            "word": inp1.value,
+            "learnSetId": this.state.id,
+            "marked": null
+        }
+
+        fetch("http://localhost:8080/api/word", {
+            method: 'POST',
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(newWord)                                   // !!! Stringify !!!
+          })
+            .then(response => response.json())
+            .then(word => this.setState((prevState) => {
+                return ({words: [word, ...prevState.words]})                // add the word to the state
+            }))
+            .then(() => document.getElementById("wordTable").deleteRow(1)) // Delete the input row
     }
 
     render(){
@@ -35,7 +87,7 @@ class LearnSetComponent extends React.Component{
 
 
 
-        // Learning Methods Buttons
+        // Learning Methods Links
         const Links = 
         <>
             <Link to={"/" + this.state.id + "/answer"} state={{...this.state}}>Answer Mode</Link><br />
@@ -43,8 +95,6 @@ class LearnSetComponent extends React.Component{
             <Link to={"/" + this.state.id + "/choice"} state={{...this.state}}>Choose Mode</Link><br />
         </>
 
-
-        // TODO Create Delete method
         // Word List
         const Words = this.state.words.map((e, i) => {
             return (
@@ -52,7 +102,7 @@ class LearnSetComponent extends React.Component{
                     <td>{e.word}</td>
                     <td>{e.translation}</td>
                     <td>{e.marked ? 1 : 0}</td>
-                    <td><button>Delete</button></td>
+                    <td><button onClick={() => this.deleteHandler(e, i)}>Delete</button></td>
                 </tr>
             )
         });
@@ -60,13 +110,13 @@ class LearnSetComponent extends React.Component{
 
         // TODO Create New word method
         // Wordlist table
-        const Table = <table>
+        const Table = <table id="wordTable">
         <tbody>
             <tr>
                 <th>{learnSet.language2?.name}</th>
                 <th>{learnSet.language1?.name}</th>
                 <th>Marked</th>
-                <th><button>New</button></th> 
+                <th><button onClick={this.createHandler}>New</button></th> 
             </tr>
             {Words}
         </tbody>
@@ -86,6 +136,7 @@ class LearnSetComponent extends React.Component{
 
 
 export default function LearnSet(props) {
+    // A intermediat function so the useParams method can be called and pass on the learnset id
     let { id } = useParams();
     return (
         <LearnSetComponent id={id}/>

@@ -42,7 +42,7 @@ class LearnSetComponent extends React.Component{
         // create input fields
         row.insertCell(0).innerHTML = "<input id='inp1' type='text'></input>";
         row.insertCell(1).innerHTML = "<input id='inp2' type='text'></input>"
-        var _ = row.insertCell(2);
+        row.insertCell(2);
         row.insertCell(3).innerHTML = "<button id='btn1'>Send</button>"
 
         // Send Button
@@ -82,7 +82,7 @@ class LearnSetComponent extends React.Component{
         const LearnSetInfo = 
         <>
             <h1>{learnSet.name}</h1>
-            <h2>{learnSet.language2?.name + " -> " + learnSet.language1?.name}</h2>,
+            <h2>{learnSet.language2?.name + " -> " + learnSet.language1?.name}</h2>
         </>
 
 

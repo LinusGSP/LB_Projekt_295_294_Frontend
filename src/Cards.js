@@ -9,15 +9,16 @@ export default function Cards(props) {
     const words = location.state.words
     const learnSet = location.state.learnSet
 
-    const handler = () => {
-        setIndex(index + 1)
-    }
-
+    const minusHandler = () => { setIndex(index - 1)}
+    const plusHandler = () => { setIndex(index + 1)}
+    
     return (
         <div>
             <h1>{learnSet.name}</h1>
-            <h1>{words[index]?.translation}</h1>
-            <button onClick={handler}>next</button>
+            <h1>{words[index].translation}</h1>
+            <h1>{words[index].word}</h1>
+            {index === 0 ? null : <button onClick={minusHandler}>zurück</button>}
+            {index === words.length? null : <button onClick={plusHandler}>weiter</button>}
         </div>
     )
 }

@@ -11,22 +11,6 @@ import LearnSet from './LearnSet'
 import CreateLearnSet from './CreateLearnSet'
 
 
-
-/* TODO 
-
-Change Paths:
-
-/:learnset_id  <LearnSet />
-
-/:learnset_id/learnset
-/:learnset_id/answer
-/:learnset_id/cards
-/:learnset_id/choose
-
-
-*/
-
-
 function App() {
   return (
     <Routes>

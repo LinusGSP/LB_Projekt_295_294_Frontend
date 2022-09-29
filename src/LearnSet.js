@@ -2,35 +2,37 @@ import React from "react"
 
 import { Link, useParams } from "react-router-dom";
 
-class LearnSetComponent extends React.Component{
-    constructor(props){
+class LearnSetComponent extends React.Component {
+    constructor(props) {
         super(props)
         this.state = {
             id: props.id,
             learnSet: {},
-            words: [] 
+            words: []
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         // Get Learnset and word data
         Promise.all([
             fetch("http://localhost:8080/api/learnset/" + this.state.id)                // Fetch Information about the learnset
                 .then(response => response.json())
-                .then(jsonData => this.setState({learnSet: jsonData})),    
+                .then(jsonData => this.setState({ learnSet: jsonData })),
             fetch("http://localhost:8080/api/word/set/" + this.state.id)                // Fetch all words contained in the learnset
                 .then(response => response.json())
-                .then(jsonData => this.setState({words: jsonData }))
+                .then(jsonData => this.setState({ words: jsonData }))
         ]).catch(() => window.location.assign("/notfound"))                             // If the words set is not found redirect to page not found
     }
 
     deleteHandler = (word, index) => {
         // Delete a word in the table
-        fetch("http://localhost:8080/api/word/" + word.id, {method: "DELETE"})          // Delete word from Database
-            .then(() => 
-                this.setState({words: this.state.words                                  // Remove word from state
-                    .filter((_, i) => { return i !== index })}),
-        )
+        fetch("http://localhost:8080/api/word/" + word.id, { method: "DELETE" })          // Delete word from Database
+            .then(() =>
+                this.setState({
+                    words: this.state.words                                  // Remove word from state
+                        .filter((_, i) => { return i !== index })
+                }),
+            )
     }
 
     createHandler = () => {
@@ -48,12 +50,12 @@ class LearnSetComponent extends React.Component{
         // Send Button
         let btn1 = document.getElementById("btn1")
         btn1.addEventListener("click", this.sendHandler)
-        
+
     }
 
     sendHandler = () => {
         // Creates new word object and sends it to the Backend
-        
+
         let inp1 = document.getElementById("inp1")
         let inp2 = document.getElementById("inp2")
         let newWord = {
@@ -65,35 +67,34 @@ class LearnSetComponent extends React.Component{
 
         fetch("http://localhost:8080/api/word", {
             method: 'POST',
-            headers: {"Content-Type": "application/json"},
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify(newWord)                                   // !!! Stringify !!!
-          })
+        })
             .then(response => response.json())
             .then(word => this.setState((prevState) => {
-                return ({words: [word, ...prevState.words]})                // add the word to the state
+                return ({ words: [word, ...prevState.words] })                // add the word to the state
             }))
             .then(() => document.getElementById("wordTable").deleteRow(1)) // Delete the input row
     }
 
-    render(){
+    render() {
         const learnSet = this.state?.learnSet;
-    
+
         // Learnset Info
-        const LearnSetInfo = 
-        <>
-            <h1>{learnSet.name}</h1>
-            <h2>{learnSet.language2?.name + " -> " + learnSet.language1?.name}</h2>
-        </>
+        const LearnSetInfo =
+            <>
+                <h1>{learnSet.name}</h1>
+                <h2>{learnSet.language2?.name + " -> " + learnSet.language1?.name}</h2>
+            </>
 
 
 
         // Learning Methods Links
-        const Links = 
-        <>
-            <Link to={"/" + this.state.id + "/answer"} state={{...this.state}}>Answer Mode</Link><br />
-            <Link to={"/" + this.state.id + "/cards"} state={{...this.state}}>Cards Mode</Link><br /> 
-            <Link to={"/" + this.state.id + "/choice"} state={{...this.state}}>Choose Mode</Link><br />
-        </>
+        const Links =
+            <>
+                <Link to={"/" + this.state.id + "/answer"} state={{ ...this.state }}>Answer Mode</Link><br />
+                <Link to={"/" + this.state.id + "/cards"} state={{ ...this.state }}>Cards Mode</Link><br />
+            </>
 
         // Word List
         const Words = this.state.words.map((e, i) => {
@@ -111,18 +112,18 @@ class LearnSetComponent extends React.Component{
         // TODO Create New word method
         // Wordlist table
         const Table = <table id="wordTable">
-        <tbody>
-            <tr>
-                <th>{learnSet.language2?.name}</th>
-                <th>{learnSet.language1?.name}</th>
-                <th>Marked</th>
-                <th><button onClick={this.createHandler}>New</button></th> 
-            </tr>
-            {Words}
-        </tbody>
-    </table>
+            <tbody>
+                <tr>
+                    <th>{learnSet.language2?.name}</th>
+                    <th>{learnSet.language1?.name}</th>
+                    <th>Marked</th>
+                    <th><button onClick={this.createHandler}>New</button></th>
+                </tr>
+                {Words}
+            </tbody>
+        </table>
 
-        
+
         // TODO Update all flags: https://www.countryflags.com/
         return (
             <div>
@@ -139,6 +140,6 @@ export default function LearnSet(props) {
     // A intermediat function so the useParams method can be called and pass on the learnset id
     let { id } = useParams();
     return (
-        <LearnSetComponent id={id}/>
+        <LearnSetComponent id={id} />
     )
 }

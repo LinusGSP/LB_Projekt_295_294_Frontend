@@ -80,21 +80,25 @@ class LearnSetComponent extends React.Component {
     render() {
         const learnSet = this.state?.learnSet;
 
+        let creationDate = new Date(learnSet.creationDate)
+        let lastEdited = new Date(learnSet.lastEdited)
         // Learnset Info
         const LearnSetInfo =
-            <>
-                <h1>{learnSet.name}</h1>
-                <h2>{learnSet.language2?.name + " -> " + learnSet.language1?.name}</h2>
-            </>
+            <div>
+                <h1>{learnSet.name} {learnSet.language1?.flag} ➜ {learnSet.language2?.flag}  </h1>
+                <h2>{learnSet.language2?.name + "➜" + learnSet.language1?.name}</h2>
+                <p><strong>Erstell datum:</strong> <br />{creationDate.getDate() + "/" + creationDate.getMonth()+ "/" + creationDate.getFullYear() }</p>
+                <p><strong>Zuletzt bearbeited:</strong> <br />{lastEdited.getDate() + "/" + lastEdited.getMonth()+ "/" + lastEdited.getFullYear() }</p>
+                </div>
 
 
 
         // Learning Methods Links
         const Links =
-            <>
+            <div className="links">
                 <Link to={"/" + this.state.id + "/answer"} state={{ ...this.state }}>Answer Mode</Link><br />
                 <Link to={"/" + this.state.id + "/cards"} state={{ ...this.state }}>Cards Mode</Link><br />
-            </>
+            </div>
 
         // Word List
         const Words = this.state.words.map((e, i) => {
@@ -126,7 +130,7 @@ class LearnSetComponent extends React.Component {
 
         // TODO Update all flags: https://www.countryflags.com/
         return (
-            <div>
+            <div className="content">
                 {LearnSetInfo}
                 {Links}
                 {Table}
@@ -137,7 +141,7 @@ class LearnSetComponent extends React.Component {
 
 
 export default function LearnSet(props) {
-    // A intermediat function so the useParams method can be called and pass on the learnset id
+    // A intermediat function so the useParams method can be called and passed on the learnset id
     let { id } = useParams();
     return (
         <LearnSetComponent id={id} />

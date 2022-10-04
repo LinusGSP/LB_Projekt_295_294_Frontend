@@ -2,6 +2,9 @@ body {
     margin: 0;
 }
 
+html {
+    background-color: lightgray;
+}
 
 nav ul {
     width: 100%;
@@ -9,7 +12,7 @@ nav ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: antiquewhite;
+    background-color: White;
 }
 
 nav li {
@@ -25,4 +28,69 @@ nav li *{
     text-decoration: none;
     font-size: 25px;
     font-weight: bolder;
+}
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+
+
+.card {
+    width: 400px;
+    margin: 20px;
+    padding: 30px;
+    border: solid;
+    border-radius: 40px;
+    transition: transform .2s;
+    box-shadow: 10px 10px 30px #888888;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+
+    margin-top: 20px;
+    margin-left: 15%;
+    margin-right: 15%;
+    background-color: white;
+    box-shadow: 0 0 30px black;
+}
+
+.content p{
+    text-align: center;
+}
+
+
+.learnsetinfo {
+    display: flex;
+}
+
+.date {
+    justify-content: start;
+}
+
+.language {
+    margin-left: 100px;
+}
+
+.title{
+    font-size: 30px;
+    
+}
+
+.title * {
+    margin-top: 0;
+    text-align: center;
+}
+
+
+.App {
+    background-color: lightgray;;
 }

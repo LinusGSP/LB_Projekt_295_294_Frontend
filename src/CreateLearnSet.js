@@ -63,10 +63,15 @@ export default class CreateLearnSet extends React.Component{
             <button onClick={this.createSet}>Create</button>
         </div>
 
+        const info = <div>
+            <h1>
+             Hier kannst du ein Neues Lernset erstellen.
+            </h1>
+        </div>
 
         return (
-            <div>
-                <h1>This is the CreateLearnSet</h1>
+            <div className="content">
+                {info}
                 {inputData}
             </div>
         )

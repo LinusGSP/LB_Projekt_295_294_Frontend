@@ -120,6 +120,28 @@ tbody td{
 }
 
 
+.recordCard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 500px;
+    height: 310px;
+    background-color: lightblue;
+    border-radius: 20px;
+    margin: 20px;
+}
+
+.recordCard:active{
+    animation: flip 2s;
+}
 
 
-
+@keyframes flip{
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(1.2);
+    }
+}

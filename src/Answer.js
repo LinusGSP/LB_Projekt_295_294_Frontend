@@ -28,7 +28,7 @@ export default function Answer(props) {
     }
 
     return (
-        <div>
+        <div className="content">
             <h1>{learnSet.name}</h1>
             <h1>{words[index].translation}</h1>
 

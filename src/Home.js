@@ -26,16 +26,16 @@ export default class Home extends React.Component{
             let creationDate = new Date(e.creationDate)
             let lastEdited = new Date(e.lastEdited)
             return (
-                <div className="card" key={e.id} onClick={() => this.changeRoute(e.id)}>
+                <div className="card hover-size" key={e.id} onClick={() => this.changeRoute(e.id)}>
                     <h2>{e.id} {e.name} {e.language1.flag} ➜ {e.language2.flag}</h2>
                     <div className="learnsetinfo">
                         <div className="date">
-                            <p><strong>Erstell datum:</strong> <br />{creationDate.getDate() + "/" + creationDate.getMonth()+ "/" + creationDate.getFullYear() }</p>
-                            <p><strong>Zuletzt bearbeited:</strong> <br/>{lastEdited.getDate() + "/" + lastEdited.getMonth()+ "/" + lastEdited.getFullYear() }</p>
+                            <p className="center"><strong>Erstell datum:</strong> <br />{creationDate.getDate() + "/" + creationDate.getMonth()+ "/" + creationDate.getFullYear() }</p>
+                            <p className="center"><strong>Zuletzt bearbeited:</strong> <br/>{lastEdited.getDate() + "/" + lastEdited.getMonth()+ "/" + lastEdited.getFullYear() }</p>
                         </div>
                         <div className="language">
-                            <p><strong>Erste Sprache:</strong> <br />{e.language1.name}</p>
-                            <p><strong>Zweite Sprache:</strong> <br />{e.language2.name}</p>
+                            <p className="center"><strong>Erste Sprache:</strong> <br />{e.language1.name}</p>
+                            <p className="center"><strong>Zweite Sprache:</strong> <br />{e.language2.name}</p>
                         </div>
                     </div>
                     {}
@@ -45,13 +45,11 @@ export default class Home extends React.Component{
 
         return (
             <div className="content">
-                
-            
-                <div className="title">
+                <div className="center title">
                     <h1>Wilkommen bei QuizMe</h1>
                 </div>
-                <p>Wähle eine Lernset aus oder <Link to="/create">erstelle</Link> dein eigenes</p>
-                <div className="cards">
+                <p className="center">Wähle eine Lernset aus oder <Link to="/create">erstelle</Link> dein eigenes</p>
+                <div className="grid-align">
                     { display_sets }
                 </div>
             </div>

@@ -86,24 +86,31 @@ class LearnSetComponent extends React.Component {
         const LearnSetInfo =
             <div>
                 <h1>{learnSet.name} {learnSet.language1?.flag} ➜ {learnSet.language2?.flag}  </h1>
-                <h2>{learnSet.language2?.name + "➜" + learnSet.language1?.name}</h2>
-                <p><strong>Erstell datum:</strong> <br />{creationDate.getDate() + "/" + creationDate.getMonth()+ "/" + creationDate.getFullYear() }</p>
-                <p><strong>Zuletzt bearbeited:</strong> <br />{lastEdited.getDate() + "/" + lastEdited.getMonth()+ "/" + lastEdited.getFullYear() }</p>
-                </div>
+                <div className="learnsetinfo">
+                        <div className="date">
+                            <p><strong>Erstell datum:</strong> <br />{creationDate.getDate() + "/" + creationDate.getMonth()+ "/" + creationDate.getFullYear() }</p>
+                            <p><strong>Zuletzt bearbeited:</strong> <br/>{lastEdited.getDate() + "/" + lastEdited.getMonth()+ "/" + lastEdited.getFullYear() }</p>
+                        </div>
+                        <div className="language">
+                            <p><strong>Erste Sprache:</strong> <br />{learnSet.language1?.name}</p>
+                            <p><strong>Zweite Sprache:</strong> <br />{learnSet.language2?.name}</p>
+                        </div>
+                    </div>
+            </div>
 
 
 
         // Learning Methods Links
         const Links =
             <div className="links">
-                <Link to={"/" + this.state.id + "/answer"} state={{ ...this.state }}>Answer Mode</Link><br />
-                <Link to={"/" + this.state.id + "/cards"} state={{ ...this.state }}>Cards Mode</Link><br />
+                <Link className="hover-size" to={"/" + this.state.id + "/answer"} state={{ ...this.state }}>Answer Mode</Link>
+                <Link className="hover-size" to={"/" + this.state.id + "/cards"} state={{ ...this.state }}>Cards Mode</Link>
             </div>
 
         // Word List
         const Words = this.state.words.map((e, i) => {
             return (
-                <tr key={i}>
+                <tr key={i} className="hover-size">
                     <td>{e.word}</td>
                     <td>{e.translation}</td>
                     <td>{e.marked ? 1 : 0}</td>
@@ -115,9 +122,9 @@ class LearnSetComponent extends React.Component {
 
         // TODO Create New word method
         // Wordlist table
-        const Table = <table id="wordTable">
+        const Table = <table id="wordtable">
             <tbody>
-                <tr>
+                <tr className="hover-size">
                     <th>{learnSet.language2?.name}</th>
                     <th>{learnSet.language1?.name}</th>
                     <th>Marked</th>

@@ -38,14 +38,15 @@ class LearnSetComponent extends React.Component {
     createHandler = () => {
         // Creates a new Table row with input fields
 
-        const table = document.getElementById("wordTable")
+        const table = document.getElementById("wordtable")
         var row = table.insertRow(1);
 
         // create input fields
         row.insertCell(0).innerHTML = "<input id='inp1' type='text'></input>";
         row.insertCell(1).innerHTML = "<input id='inp2' type='text'></input>"
         row.insertCell(2);
-        row.insertCell(3).innerHTML = "<button id='btn1'>Send</button>"
+        row.insertCell(3);
+        row.insertCell(4).innerHTML = "<button id='btn1'>Send</button>"
 
         // Send Button
         let btn1 = document.getElementById("btn1")
@@ -53,9 +54,47 @@ class LearnSetComponent extends React.Component {
 
     }
 
+    editHandler = (e, i) => {
+        const row = document.getElementById("wordtable").rows[i + 1].cells
+
+        row[0].innerHTML = `<input id='inp1' type='text' value="${e.word}"></input>`;
+        row[1].innerHTML = `<input id='inp2' type='text' value="${e.translation}"></input>`;
+        row[3].innerHTML = `<button>Submit</button>`
+
+        row[3].addEventListener("click", () => this.putHadler(i))
+    }
+
+    putHadler = (i) => {
+        let inp1 = document.getElementById("inp1")
+        let inp2 = document.getElementById("inp2")
+
+        let editedWord = {
+            "translation": inp2.value + " ",
+            "word": inp1.value + " ",
+            "learnSetId": this.state.id,
+            "marked": null
+        }
+
+        fetch("http://localhost:8080/api/word/" + this.state.words[i].id, {
+            method: 'PUT',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(editedWord)                                   // !!! Stringify !!!
+        })
+            .then(response => response.json())
+            .then(jsonData => {
+                this.setState((prevState) => {
+                    return { words: [...prevState.words.map((obj) => obj.id === jsonData.id ? jsonData : obj)] }
+                })
+            })
+
+        const row = document.getElementById("wordtable").rows[i + 1].cells
+
+        row[3].innerHTML = "<td><button>Edit</button></td>"
+
+    }
+
     sendHandler = () => {
         // Creates new word object and sends it to the Backend
-
         let inp1 = document.getElementById("inp1")
         let inp2 = document.getElementById("inp2")
         let newWord = {
@@ -64,6 +103,7 @@ class LearnSetComponent extends React.Component {
             "learnSetId": this.state.id,
             "marked": null
         }
+        console.log(newWord);
 
         fetch("http://localhost:8080/api/word", {
             method: 'POST',
@@ -74,7 +114,7 @@ class LearnSetComponent extends React.Component {
             .then(word => this.setState((prevState) => {
                 return ({ words: [word, ...prevState.words] })                // add the word to the state
             }))
-            .then(() => document.getElementById("wordTable").deleteRow(1)) // Delete the input row
+            .then(() => document.getElementById("wordtable").deleteRow(1)) // Delete the input row
     }
 
     render() {
@@ -87,15 +127,15 @@ class LearnSetComponent extends React.Component {
             <div>
                 <h1>{learnSet.name} {learnSet.language1?.flag} ➜ {learnSet.language2?.flag}  </h1>
                 <div className="learnsetinfo">
-                        <div className="date">
-                            <p><strong>Erstell datum:</strong> <br />{creationDate.getDate() + "/" + creationDate.getMonth()+ "/" + creationDate.getFullYear() }</p>
-                            <p><strong>Zuletzt bearbeited:</strong> <br/>{lastEdited.getDate() + "/" + lastEdited.getMonth()+ "/" + lastEdited.getFullYear() }</p>
-                        </div>
-                        <div className="language">
-                            <p><strong>Erste Sprache:</strong> <br />{learnSet.language1?.name}</p>
-                            <p><strong>Zweite Sprache:</strong> <br />{learnSet.language2?.name}</p>
-                        </div>
+                    <div className="date">
+                        <p><strong>Erstell datum:</strong> <br />{creationDate.getDate() + "/" + creationDate.getMonth() + "/" + creationDate.getFullYear()}</p>
+                        <p><strong>Zuletzt bearbeited:</strong> <br />{lastEdited.getDate() + "/" + lastEdited.getMonth() + "/" + lastEdited.getFullYear()}</p>
                     </div>
+                    <div className="language">
+                        <p><strong>Erste Sprache:</strong> <br />{learnSet.language1?.name}</p>
+                        <p><strong>Zweite Sprache:</strong> <br />{learnSet.language2?.name}</p>
+                    </div>
+                </div>
             </div>
 
 
@@ -114,6 +154,7 @@ class LearnSetComponent extends React.Component {
                     <td>{e.word}</td>
                     <td>{e.translation}</td>
                     <td>{e.marked ? 1 : 0}</td>
+                    <td><button onClick={() => this.editHandler(e, i)}>Edit</button></td>
                     <td><button onClick={() => this.deleteHandler(e, i)}>Delete</button></td>
                 </tr>
             )
@@ -128,6 +169,7 @@ class LearnSetComponent extends React.Component {
                     <th>{learnSet.language2?.name}</th>
                     <th>{learnSet.language1?.name}</th>
                     <th>Marked</th>
+                    <th>Edit</th>
                     <th><button onClick={this.createHandler}>New</button></th>
                 </tr>
                 {Words}

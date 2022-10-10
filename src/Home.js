@@ -30,8 +30,8 @@ export default class Home extends React.Component{
                     <h2>{e.id} {e.name} {e.language1.flag} ➜ {e.language2.flag}</h2>
                     <div className="learnsetinfo">
                         <div className="date">
-                            <p className="center"><strong>Erstell datum:</strong> <br />{creationDate.getDate() + "/" + creationDate.getMonth()+ "/" + creationDate.getFullYear() }</p>
-                            <p className="center"><strong>Zuletzt bearbeited:</strong> <br/>{lastEdited.getDate() + "/" + lastEdited.getMonth()+ "/" + lastEdited.getFullYear() }</p>
+                            <p className="center"><strong>Erstell datum:</strong> <br />{creationDate.toLocaleDateString()}</p>
+                            <p className="center"><strong>Zuletzt bearbeited:</strong> <br/>{lastEdited.toLocaleDateString()}</p>
                         </div>
                         <div className="language">
                             <p className="center"><strong>Erste Sprache:</strong> <br />{e.language1.name}</p>

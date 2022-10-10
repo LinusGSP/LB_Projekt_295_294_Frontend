@@ -36,8 +36,8 @@ export default function Answer(props) {
     <h1 onClick={() => window.location.replace("http://localhost:3000/" + learnSet.id)}>{learnSet.name} {learnSet.language1?.flag} ➜ {learnSet.language2?.flag}  </h1>
     <div className="learnsetinfo">
             <div className="date">
-                <p><strong>Erstell datum:</strong> <br />{creationDate.getDate() + "/" + creationDate.getMonth()+ "/" + creationDate.getFullYear() }</p>
-                <p><strong>Zuletzt bearbeited:</strong> <br/>{lastEdited.getDate() + "/" + lastEdited.getMonth()+ "/" + lastEdited.getFullYear() }</p>
+                <p><strong>Erstell datum:</strong> <br />{creationDate.toLocaleDateString()}</p>
+                <p><strong>Zuletzt bearbeited:</strong> <br/>{lastEdited.toLocaleDateString()}</p>
             </div>
             <div className="language">
                 <p><strong>Erste Sprache:</strong> <br />{learnSet.language1?.name}</p>

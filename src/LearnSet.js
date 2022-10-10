@@ -132,6 +132,7 @@ class LearnSetComponent extends React.Component {
         const learnSet = this.state?.learnSet;
 
         // Learnset Info
+        
         let creationDate = new Date(learnSet.creationDate)
         let lastEdited = new Date(learnSet.lastEdited)
         const LearnSetInfo =
@@ -139,8 +140,8 @@ class LearnSetComponent extends React.Component {
                 <h1>{learnSet.name} {learnSet.language1?.flag} ➜ {learnSet.language2?.flag}  </h1>
                 <div className="learnsetinfo">
                     <div className="date">
-                        <p><strong>Erstell datum:</strong> <br />{creationDate.getDate() + "/" + creationDate.getMonth() + "/" + creationDate.getFullYear()}</p>
-                        <p><strong>Zuletzt bearbeited:</strong> <br />{lastEdited.getDate() + "/" + lastEdited.getMonth() + "/" + lastEdited.getFullYear()}</p>
+                        <p><strong>Erstell datum:</strong> <br />{creationDate.toLocaleDateString()}</p>
+                        <p><strong>Zuletzt bearbeited:</strong> <br />{lastEdited.toLocaleDateString()}</p>
                     </div>
                     <div className="language">
                         <p><strong>Erste Sprache:</strong> <br />{learnSet.language1?.name}</p>

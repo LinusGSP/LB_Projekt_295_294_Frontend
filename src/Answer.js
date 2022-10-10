@@ -1,5 +1,6 @@
 import { React, useState } from "react"
 import { useLocation } from "react-router";
+import LearnSetInfo from "./LearnSetInfo";
 
 
 export default function Answer(props) {
@@ -10,42 +11,15 @@ export default function Answer(props) {
     const words = location.state.words
     const learnSet = location.state.learnSet
 
-    const plusHandler = () => { setIndex(index + 1); setShow(0) }
-    const minusHandler = () => { setIndex(index - 1); setShow(0) }
-
-    const showResult = () => {
-        setShow(1)
-    }
+    const plusHandler = () => { setIndex(index + 1); setShow(0) } // go to the next word
+    const minusHandler = () => { setIndex(index - 1); setShow(0) } // go to the previous word
+    const showResult = () => { setShow(1) } // show the correct answer
 
     const checkAnswer = () => {
         let answer = document.getElementById("answer").value
-        if (answer === words[index].word) {
-            alert("Correct!")
-        } else {
-            alert("Wrong, try again")
-        }
+        answer === words[index].word ? alert("Correct!") : alert("Wrong, try again") // check if answer is correct
         setShow(1)
     }
-
-    // create new date from unix
-    let creationDate = new Date(learnSet.creationDate)
-    let lastEdited = new Date(learnSet.lastEdited)
-
-    // all learnset infos
-    const LearnSetInfo = <div>
-    <h1 onClick={() => window.location.replace("http://localhost:3000/" + learnSet.id)}>{learnSet.name} {learnSet.language1?.flag} ➜ {learnSet.language2?.flag}  </h1>
-    <div className="learnsetinfo">
-            <div className="date">
-                <p><strong>Erstell datum:</strong> <br />{creationDate.toLocaleDateString()}</p>
-                <p><strong>Zuletzt bearbeited:</strong> <br/>{lastEdited.toLocaleDateString()}</p>
-            </div>
-            <div className="language">
-                <p><strong>Erste Sprache:</strong> <br />{learnSet.language1?.name}</p>
-                <p><strong>Zweite Sprache:</strong> <br />{learnSet.language2?.name}</p>
-            </div>
-        </div>
-    </div>
-
 
     // shows the first word
     const firstWord = <div className="grid-align">
@@ -66,8 +40,8 @@ export default function Answer(props) {
                 {index === words.length -1 ? null : <button onClick={plusHandler} className="btn">weiter</button>}
             </div> 
             <div>
-            <button onClick={showResult} className="btn">Lösung anzeigen</button>
-            <button onClick={checkAnswer} className="btn">Enter</button>
+                <button onClick={showResult} className="btn">Lösung anzeigen</button>
+                <button onClick={checkAnswer} className="btn">Enter</button>
             </div>
         </div>
 
@@ -84,7 +58,7 @@ export default function Answer(props) {
 
     return (
         <div className="content">
-            {LearnSetInfo}
+            <LearnSetInfo learnSet={learnSet} classNames="clear"/>
             {currentPos}
             {firstWord}
             {input}

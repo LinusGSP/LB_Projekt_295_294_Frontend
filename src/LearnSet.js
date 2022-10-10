@@ -2,7 +2,7 @@ import React from "react"
 
 import { Link, useParams } from "react-router-dom";
 import './Styling/LearnSet.css'
-
+import LearnSetInfo from "./LearnSetInfo";
 
 class LearnSetComponent extends React.Component {
     constructor(props) {
@@ -28,12 +28,18 @@ class LearnSetComponent extends React.Component {
         ]).catch(() => window.location.assign("/notfound"))                             // If the words set is not found redirect to page not found
     }
 
+
+    // Delete a word in the table
     deleteHandler = (word, index) => {
-        // Delete a word in the table
-        fetch("http://localhost:8080/api/word/" + word.id, { method: "DELETE" })          // Delete word from Database
+        const requestData = { 
+            method: "DELETE",
+            body: JSON.stringify(word)
+        }
+
+        fetch("http://localhost:8080/api/word", requestData)          // Delete word from Database
             .then(() =>
                 this.setState({
-                    words: this.state.words                                  // Remove word from state
+                    words: this.state.words                                         // Remove word from state
                         .filter((_, i) => { return i !== index })
                 }),
             )
@@ -67,24 +73,37 @@ class LearnSetComponent extends React.Component {
         row[2].addEventListener("click", () => this.putHadler(i))
     }
 
+    // Edits a already existing word
     putHadler = (i) => {
-        let inp1 = document.getElementById("inp1")
-        let inp2 = document.getElementById("inp2")
 
-        let editedWord = {
-            "translation": inp2.value + " ",
-            "word": inp1.value + " ",
+        // get the word/translation input from the table row
+        let word = document.getElementById("inp1").value
+        let translation = document.getElementById("inp2").value
+
+
+        // Validation
+        if (word === "") return alert("word 1 cant be empty")
+        if (translation === "") return alert("word 2 cant be empty")
+
+        // word object
+        let learnWord = {
+            "translation": translation + " ",
+            "word": word + " ",
             "learnSetId": this.state.id,
+            "id": this.state.words[i].id
         }
 
-        fetch("http://localhost:8080/api/word/" + this.state.words[i].id, {
+        // request data
+        const requestData = {
             method: 'PUT',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(editedWord)                                   // !!! Stringify !!!
-        })
+            body: JSON.stringify(learnWord)                                   // !!! Stringify !!!
+        }
+
+        fetch("http://localhost:8080/api/word", requestData)
             .then(response => response.json())
             .then(jsonData => {
-                this.setState((prevState) => {
+                this.setState((prevState) => { 
                     return { words: [...prevState.words.map((obj) => obj.id === jsonData.id ? jsonData : obj)] }
                 })
             })
@@ -96,74 +115,56 @@ class LearnSetComponent extends React.Component {
     }
 
     sendHandler = () => {
-        // Creates new word object and sends it to the Backend
-        let inp1 = document.getElementById("inp1")
-        let inp2 = document.getElementById("inp2")
+        // Creates new word object and send POST request
+        let word = document.getElementById("inp1").value
+        let translation = document.getElementById("inp2").value
 
-        
+        // Validation
+        if (word === "") return alert("word 1 cant be empty")
+        if (translation === "") return alert("word 2 cant be empty")
 
-        let newWord = {
-            "translation": inp2.value,
-            "word": inp1.value,
+         // Word object
+         let learnWord = {
+            "translation": word,
+            "word": translation,
             "learnSetId": this.state.id,
         }
 
-        if (newWord.word === "") return alert("word 1 cant be empty")
-        if (newWord.translation === "") return alert("word 2 cant be empty")
-
-        console.log(newWord);
-
-        fetch("http://localhost:8080/api/word", {
+        // request data
+        const requestData = {
             method: 'POST',
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(newWord)                                   // !!! Stringify !!!
-        })
+            body: JSON.stringify(learnWord)                                   // !!! Stringify !!!
+        }
+
+        fetch("http://localhost:8080/api/word", requestData)
             .then(response => response.json())
             .then(word => {
-                console.log(word);
                 this.setState((prevState) => {
-                return ({ words: [word, ...prevState.words] })                // add the word to the state
+                    return ({ words: [word, ...prevState.words] })                // add the word to the state
             })}
             )
             .then(() => document.getElementById("wordtable").deleteRow(1)) // Delete the input row
     }
 
+    
+
     render() {
         const learnSet = this.state?.learnSet;
-
-        // Learnset Info
-        
-        let creationDate = new Date(learnSet.creationDate)
-        let lastEdited = new Date(learnSet.lastEdited)
-        const LearnSetInfo =
-            <div>
-                <h1>{learnSet.name} {learnSet.language1?.flag} ➜ {learnSet.language2?.flag}  </h1>
-                <div className="learnsetinfo">
-                    <div className="date">
-                        <p><strong>Erstell datum:</strong> <br />{creationDate.toLocaleDateString()}</p>
-                        <p><strong>Zuletzt bearbeited:</strong> <br />{lastEdited.toLocaleDateString()}</p>
-                    </div>
-                    <div className="language">
-                        <p><strong>Erste Sprache:</strong> <br />{learnSet.language1?.name}</p>
-                        <p><strong>Zweite Sprache:</strong> <br />{learnSet.language2?.name}</p>
-                    </div>
-                </div>
-            </div>
-
-
 
         // Learning Methods Links
         const Links =
         <div className="grid-align">
-            { this.state.words.length === 0 ? null : 
+            { 
+            this.state.words.length === 0 ? null :              // check if atleast 1 word in list
                 <div className="links">
-                <Link className="hover-size" to={"/" + this.state.id + "/answer"} state={{ ...this.state }}>Answer Mode</Link>
-                <Link className="hover-size" to={"/" + this.state.id + "/cards"} state={{ ...this.state }}>Cards Mode</Link>
-            </div>
+                    <Link className="hover-size" to={"/" + this.state.id + "/answer"} state={{ ...this.state }}>Answer Mode</Link>
+                    <Link className="hover-size" to={"/" + this.state.id + "/cards"} state={{ ...this.state }}>Cards Mode</Link>
+                </div>
             }
         </div>
 
-        // Word List
+        // Words rows
         const Words = this.state.words.map((e, i) => {
             return (
                 <tr key={i} className="hover-size">
@@ -191,9 +192,10 @@ class LearnSetComponent extends React.Component {
             </tbody>
         </table>
 
+
         return (
             <div className="content">
-                {LearnSetInfo}
+                <LearnSetInfo learnSet={learnSet} classNames="clear"/>
                 {Links}
                 {Table}
             </div>

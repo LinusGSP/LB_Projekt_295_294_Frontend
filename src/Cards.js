@@ -1,5 +1,6 @@
 import { React, useState } from "react"
 import { useLocation } from "react-router";
+import LearnSetInfo from "./LearnSetInfo";
 
 
 export default function Cards(props) {
@@ -11,29 +12,9 @@ export default function Cards(props) {
     const words = location.state.words  // get all the learnset words
     const learnSet = location.state.learnSet // get the learnset info
 
-
     // change the current card
     const minusHandler = () => { setIndex(index - 1) }
     const plusHandler = () => { setIndex(index + 1) }
-
-    // create new date from unix
-    let creationDate = new Date(learnSet.creationDate)
-    let lastEdited = new Date(learnSet.lastEdited)
-
-    // all learnset infos
-    const LearnSetInfo = <div>
-    <h1 onClick={() => window.location.replace("http://localhost:3000/" + learnSet.id)}>{learnSet.name} {learnSet.language1?.flag} ➜ {learnSet.language2?.flag}  </h1>
-    <div className="learnsetinfo">
-            <div className="date">
-                <p><strong>Erstell datum:</strong> <br />{creationDate.toLocaleDateString()}</p>
-                <p><strong>Zuletzt bearbeited:</strong> <br/>{lastEdited.toLocaleDateString()}</p>
-            </div>
-            <div className="language">
-                <p><strong>Erste Sprache:</strong> <br />{learnSet.language1?.name}</p>
-                <p><strong>Zweite Sprache:</strong> <br />{learnSet.language2?.name}</p>
-            </div>
-        </div>
-    </div>
 
     // the main card
     const recordCard = 
@@ -54,13 +35,12 @@ export default function Cards(props) {
 
     // show current index
     const currentPos = <div className="grid-align">
-    {index + 1}/{words.length}
+        {index + 1}/{words.length}
     </div>
-
 
     return (
         <div className="content">
-            {LearnSetInfo}
+            <LearnSetInfo learnSet={learnSet} classNames="clear"/>
             {currentPos}
             {recordCard}
             {buttons}

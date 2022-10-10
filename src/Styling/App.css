@@ -67,23 +67,23 @@ nav li * {
     text-align: center;
 }
 
-
-.learnsetinfo {
-    display: flex;
+.grid-container {
+    display: grid;
+    grid-template-columns: 200px 200px;
 }
 
-
-.language {
-    margin-left: 100px;
-}
 
 .title {
     font-size: 30px;
 }
 
+.name {
+    margin: 0;
+}
 
-
-
+.clear {
+    background-color: transparent !important;
+}
 
 .recordCard {
     text-align: center;

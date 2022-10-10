@@ -41,7 +41,8 @@ export default class CreateLearnSet extends React.Component{
             body: JSON.stringify(newLearnSet), 
             headers: {'Content-Type': 'application/json'}
         })
-            .then(response => console.log(response))
+        
+        window.location.assign("/")
     }
 
     render(){
@@ -49,30 +50,45 @@ export default class CreateLearnSet extends React.Component{
         let language1Options = this.state.languages.map((e, i) => { return <option key={i} value={e.id}>{e.name}</option> })
         let language2Options = this.state.languages.map((e, i) => { return <option key={i} value={e.id}>{e.name}</option> })
 
-        let inputData = <div>
+
+        const inputName = <div className="grid-align inp">
             <input id="learnsetname" type="text" placeholder="Name of Learnset"></input>
+        </div>
 
-            <select id="language1">
-                {language1Options}
-            </select>
+        let inputLanguage = <div className="grid-align">
 
-            <select id="language2">
-                {language2Options}
-            </select>
+                <div className="dropdown">
+                    <p>First Language: </p>
+                    <select id="language1">
+                        {language1Options}
+                    </select>
+                </div>
+                <div className="dropdown">
+                    <p>Second Language: </p>
+                    <select id="language2">
+                        {language2Options}
+                    </select>
 
-            <button onClick={this.createSet}>Create</button>
+                </div>
+
+        </div>
+
+        const send = <div className="grid-align">
+            <button onClick={this.createSet} className="btn">Create</button>
         </div>
 
         const info = <div>
             <h1>
-             Hier kannst du ein Neues Lernset erstellen.
+             Hier kannst du ein neues Lernset erstellen.
             </h1>
         </div>
 
         return (
             <div className="content">
                 {info}
-                {inputData}
+                {inputName}
+                {inputLanguage}
+                {send}
             </div>
         )
     }

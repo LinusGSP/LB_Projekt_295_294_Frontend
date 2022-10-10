@@ -17,7 +17,9 @@ class LearnSetComponent extends React.Component {
         Promise.all([
             fetch("http://localhost:8080/api/learnset/" + this.state.id)                // Fetch Information about the learnset
                 .then(response => response.json())
-                .then(jsonData => this.setState({ learnSet: jsonData })),
+                .then(jsonData => {
+                    console.log(jsonData);
+                    this.setState({ learnSet: jsonData })}),
             fetch("http://localhost:8080/api/word/set/" + this.state.id)                // Fetch all words contained in the learnset
                 .then(response => response.json())
                 .then(jsonData => this.setState({ words: jsonData }))
@@ -45,8 +47,7 @@ class LearnSetComponent extends React.Component {
         row.insertCell(0).innerHTML = "<input id='inp1' type='text'></input>";
         row.insertCell(1).innerHTML = "<input id='inp2' type='text'></input>"
         row.insertCell(2);
-        row.insertCell(3);
-        row.insertCell(4).innerHTML = "<button id='btn1'>Send</button>"
+        row.insertCell(3).innerHTML = "<button id='btn1'>Send</button>"
 
         // Send Button
         let btn1 = document.getElementById("btn1")
@@ -59,9 +60,9 @@ class LearnSetComponent extends React.Component {
 
         row[0].innerHTML = `<input id='inp1' type='text' value="${e.word}"></input>`;
         row[1].innerHTML = `<input id='inp2' type='text' value="${e.translation}"></input>`;
-        row[3].innerHTML = `<button>Submit</button>`
+        row[2].innerHTML = `<button>Submit</button>`
 
-        row[3].addEventListener("click", () => this.putHadler(i))
+        row[2].addEventListener("click", () => this.putHadler(i))
     }
 
     putHadler = (i) => {
@@ -72,7 +73,6 @@ class LearnSetComponent extends React.Component {
             "translation": inp2.value + " ",
             "word": inp1.value + " ",
             "learnSetId": this.state.id,
-            "marked": null
         }
 
         fetch("http://localhost:8080/api/word/" + this.state.words[i].id, {
@@ -89,7 +89,7 @@ class LearnSetComponent extends React.Component {
 
         const row = document.getElementById("wordtable").rows[i + 1].cells
 
-        row[3].innerHTML = "<td><button>Edit</button></td>"
+        row[2].innerHTML = "<td className={small-b}>Edit</td>"
 
     }
 
@@ -97,12 +97,18 @@ class LearnSetComponent extends React.Component {
         // Creates new word object and sends it to the Backend
         let inp1 = document.getElementById("inp1")
         let inp2 = document.getElementById("inp2")
+
+        
+
         let newWord = {
             "translation": inp2.value,
             "word": inp1.value,
             "learnSetId": this.state.id,
-            "marked": null
         }
+
+        if (newWord.word === "") return alert("word 1 cant be empty")
+        if (newWord.translation === "") return alert("word 2 cant be empty")
+
         console.log(newWord);
 
         fetch("http://localhost:8080/api/word", {
@@ -111,18 +117,21 @@ class LearnSetComponent extends React.Component {
             body: JSON.stringify(newWord)                                   // !!! Stringify !!!
         })
             .then(response => response.json())
-            .then(word => this.setState((prevState) => {
+            .then(word => {
+                console.log(word);
+                this.setState((prevState) => {
                 return ({ words: [word, ...prevState.words] })                // add the word to the state
-            }))
+            })}
+            )
             .then(() => document.getElementById("wordtable").deleteRow(1)) // Delete the input row
     }
 
     render() {
         const learnSet = this.state?.learnSet;
 
+        // Learnset Info
         let creationDate = new Date(learnSet.creationDate)
         let lastEdited = new Date(learnSet.lastEdited)
-        // Learnset Info
         const LearnSetInfo =
             <div>
                 <h1>{learnSet.name} {learnSet.language1?.flag} ➜ {learnSet.language2?.flag}  </h1>
@@ -142,10 +151,14 @@ class LearnSetComponent extends React.Component {
 
         // Learning Methods Links
         const Links =
-            <div className="links">
+        <div className="grid-align">
+            { this.state.words.length === 0 ? null : 
+                <div className="links">
                 <Link className="hover-size" to={"/" + this.state.id + "/answer"} state={{ ...this.state }}>Answer Mode</Link>
                 <Link className="hover-size" to={"/" + this.state.id + "/cards"} state={{ ...this.state }}>Cards Mode</Link>
             </div>
+            }
+        </div>
 
         // Word List
         const Words = this.state.words.map((e, i) => {
@@ -153,31 +166,28 @@ class LearnSetComponent extends React.Component {
                 <tr key={i} className="hover-size">
                     <td>{e.word}</td>
                     <td>{e.translation}</td>
-                    <td>{e.marked ? 1 : 0}</td>
-                    <td><button onClick={() => this.editHandler(e, i)}>Edit</button></td>
-                    <td><button onClick={() => this.deleteHandler(e, i)}>Delete</button></td>
+
+                    <td onClick={() => this.editHandler(e, i)} className="small-btn">Edit</td>
+                    <td onClick={() => this.deleteHandler(e, i)} className="small-btn">Delete</td>
                 </tr>
             )
         });
 
 
-        // TODO Create New word method
         // Wordlist table
         const Table = <table id="wordtable">
             <tbody>
                 <tr className="hover-size">
                     <th>{learnSet.language2?.name}</th>
                     <th>{learnSet.language1?.name}</th>
-                    <th>Marked</th>
+
                     <th>Edit</th>
-                    <th><button onClick={this.createHandler}>New</button></th>
+                    <th onClick={this.createHandler} className="small-btn">New</th>
                 </tr>
                 {Words}
             </tbody>
         </table>
 
-
-        // TODO Update all flags: https://www.countryflags.com/
         return (
             <div className="content">
                 {LearnSetInfo}

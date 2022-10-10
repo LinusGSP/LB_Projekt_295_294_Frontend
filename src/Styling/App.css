@@ -138,3 +138,30 @@ tbody td {
     border-radius: 20px;
     width: 240px;
 }
+
+.inp input{
+    height: 70px;
+    width: 500px;
+    font-size: 30px;
+}
+
+.small-btn {
+    background-color: lightgray;
+    text-align: center;
+    border-radius: 10px;
+    border: 10;
+  
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.dropdown {
+    margin: 20px;
+    font-weight: bolder;
+}
+
+.dropdown select {
+    width: 200px;
+    height: 50px;
+    font-size: 15px;
+}

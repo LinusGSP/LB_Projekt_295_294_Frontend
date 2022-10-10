@@ -147,10 +147,13 @@ class LearnSetComponent extends React.Component {
             .then(() => document.getElementById("wordtable").deleteRow(1)) // Delete the input row
     }
 
-    
+    // shuffle the word list
+    shuffle = () => {
+        this.setState({words: this.state.words.sort(function () {return Math.random() - 0.5 })})
+    }
 
     render() {
-        const learnSet = this.state?.learnSet;
+        const learnSet = this.state?.learnSet
 
         // Learning Methods Links
         const Links =
@@ -160,6 +163,7 @@ class LearnSetComponent extends React.Component {
                 <div className="links">
                     <Link className="hover-size" to={"/" + this.state.id + "/answer"} state={{ ...this.state }}>Answer Mode</Link>
                     <Link className="hover-size" to={"/" + this.state.id + "/cards"} state={{ ...this.state }}>Cards Mode</Link>
+                    <Link className="hover-size" onClick={this.shuffle}>Mischeln</Link>
                 </div>
             }
         </div>

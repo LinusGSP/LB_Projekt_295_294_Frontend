@@ -8,7 +8,7 @@ import Answer from './Answer';
 import Cards from './Cards';
 import NotFound from './NotFound';
 import LearnSet from './LearnSet'
-import CreateLearnSet from './CreateLearnSet'
+import Create from './Create'
 
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
     <Routes>
       <Route path='/' element={<Layout />}>
         <Route index element={<Home />}/>
-        <Route path='create' element={<CreateLearnSet />}/>
+        <Route path='create' element={<Create />}/>
 
         <Route path=':id' element={<LearnSet />}/>
         <Route path=':id/answer' element={<Answer />}/>

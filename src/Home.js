@@ -1,6 +1,6 @@
 import React from "react"
 import { Link } from "react-router-dom"
-
+import './Styling/Home.css' 
 
 export default class Home extends React.Component{
     constructor(){

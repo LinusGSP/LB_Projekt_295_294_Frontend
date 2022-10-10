@@ -1,5 +1,5 @@
 import React from "react";
-
+import './Styling/Create.css'
 
 export default class CreateLearnSet extends React.Component{
     constructor(props){

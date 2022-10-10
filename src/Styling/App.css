@@ -43,18 +43,6 @@ nav li * {
 }
 
 
-.card {
-    width: 350px;
-    margin: 20px;
-    padding: 30px;
-    border: solid;
-    border-radius: 40px;
-
-    box-shadow: 10px 10px 30px #888888;
-}
-
-
-
 .hover-size {
     transition: transform .2s;
 }
@@ -94,27 +82,7 @@ nav li * {
 }
 
 
-.links * {
-    display: inline-block;
-    width: 100px;
-    padding: 25px;
-    margin: 20px 0;
-    margin-right: 85px;
-    border: solid;
-    border-radius: 20px;
-    color: black;
-}
 
-
-tr {
-    border: solid rebeccapurple;
-}
-
-tbody td {
-    border: solid 1px;
-    border-radius: 10px;
-    padding: 6px;
-}
 
 
 .recordCard {
@@ -153,15 +121,4 @@ tbody td {
   
     margin-left: auto;
     margin-right: auto;
-}
-
-.dropdown {
-    margin: 20px;
-    font-weight: bolder;
-}
-
-.dropdown select {
-    width: 200px;
-    height: 50px;
-    font-size: 15px;
 }

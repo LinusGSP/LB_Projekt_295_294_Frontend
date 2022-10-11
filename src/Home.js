@@ -13,7 +13,6 @@ export default class Home extends React.Component{
 
     componentDidMount() {
         // fetch all learnset data
-
         fetch("http://localhost:8080/api/learnset")
         .then(response => response.json())
         .then(jsonData => {this.setState({ learnsets : jsonData}); console.log(this.state);})      

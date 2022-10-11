@@ -1,6 +1,8 @@
 import randomColor from "./Styling/RandomColor";
 
 export default function LearnSetInfo(props) {
+    /* This Component creates a information card from a learnSet */
+
     const learnSet = props.learnSet
     const classNames = props.classNames
 

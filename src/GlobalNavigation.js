@@ -9,18 +9,15 @@ export default class GlobalNavigation extends React.Component{
             <nav>
                 <ul>
                     <li>
-                    <Link to="/">Quiz Me</Link>
+                        <Link to="/">Quiz Me</Link>
                     </li>
                     <li>
                         <Link to="/">Home</Link>
                     </li>
-
                     <li>
                         <Link to="/create">New</Link>
                     </li>
-
                 </ul>
-                
             </nav>
         );
     }

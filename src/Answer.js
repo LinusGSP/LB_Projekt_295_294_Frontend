@@ -5,8 +5,8 @@ import LearnSetInfo from "./LearnSetInfo";
 
 export default function Answer(props) {
     const location = useLocation();
-    const [index, setIndex] = useState(0)
-    const [show, setShow] = useState(0)
+    const [index, setIndex] = useState(0) // new state of the index of the current card
+    const [show, setShow] = useState(0) // state for which side of the result should be shown
 
     const words = location.state.words
     const learnSet = location.state.learnSet
@@ -21,7 +21,7 @@ export default function Answer(props) {
         setShow(1)
     }
 
-    // shows the first word
+    // Displays the words
     const firstWord = <div className="grid-align">
         <h1>{words[index].translation}</h1>
     </div>
@@ -50,7 +50,7 @@ export default function Answer(props) {
         {show ? <h1>{words[index].word}</h1> : null}
     </div>
 
-    //
+    // displays the current index
     const currentPos = <div className="grid-align">
         {index + 1}/{words.length}
     </div>

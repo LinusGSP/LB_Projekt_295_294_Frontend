@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { MemoryRouter, Router } from 'react-router'
+import { MemoryRouter } from 'react-router'
 import App from '../App'
 
 describe("This is a Testpacket for the notfound component", () => {

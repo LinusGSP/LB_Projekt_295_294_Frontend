@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react'
-import { MemoryRouter } from 'react-router'
 import Cards from '../Cards'
 
 jest.mock("../cards", () => () => <div>CardsRendered</div>)

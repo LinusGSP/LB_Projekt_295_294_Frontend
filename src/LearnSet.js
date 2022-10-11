@@ -33,10 +33,9 @@ class LearnSetComponent extends React.Component {
     deleteHandler = (word, index) => {
         const requestData = { 
             method: "DELETE",
-            body: JSON.stringify(word)
         }
 
-        fetch("http://localhost:8080/api/word", requestData)          // Delete word from Database
+        fetch("http://localhost:8080/api/word/" + word.id , requestData)          // Delete word from Database
             .then(() =>
                 this.setState({
                     words: this.state.words                                         // Remove word from state

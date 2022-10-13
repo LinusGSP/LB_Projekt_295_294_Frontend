@@ -21,7 +21,8 @@ class LearnSetComponent extends React.Component {
                 .then(response => response.json())
                 .then(jsonData => {
                     console.log(jsonData);
-                    this.setState({ learnSet: jsonData })}),
+                    this.setState({ learnSet: jsonData })
+                }),
             fetch("http://localhost:8080/api/word/set/" + this.state.id)                // Fetch all words contained in the learnset
                 .then(response => response.json())
                 .then(jsonData => this.setState({ words: jsonData }))
@@ -31,11 +32,11 @@ class LearnSetComponent extends React.Component {
 
     // Delete a word in the table
     deleteHandler = (word, index) => {
-        const requestData = { 
+        const requestData = {
             method: "DELETE",
         }
 
-        fetch("http://localhost:8080/api/word/" + word.id , requestData)          // Delete word from Database
+        fetch("http://localhost:8080/api/word/" + word.id, requestData)          // Delete word from Database
             .then(() =>
                 this.setState({
                     words: this.state.words                                         // Remove word from state
@@ -102,7 +103,7 @@ class LearnSetComponent extends React.Component {
         fetch("http://localhost:8080/api/word", requestData)
             .then(response => response.json())
             .then(jsonData => {
-                this.setState((prevState) => { 
+                this.setState((prevState) => {
                     return { words: [...prevState.words.map((obj) => obj.id === jsonData.id ? jsonData : obj)] }
                 })
             })
@@ -122,10 +123,10 @@ class LearnSetComponent extends React.Component {
         if (word === "") return alert("word 1 cant be empty")
         if (translation === "") return alert("word 2 cant be empty")
 
-         // Word object
-         let learnWord = {
-            "translation": word,
-            "word": translation,
+        // Word object
+        let learnWord = {
+            "translation": translation,
+            "word": word,
             "learnSetId": this.state.id,
         }
 
@@ -141,14 +142,15 @@ class LearnSetComponent extends React.Component {
             .then(word => {
                 this.setState((prevState) => {
                     return ({ words: [word, ...prevState.words] })                // add the word to the state
-            })}
+                })
+            }
             )
             .then(() => document.getElementById("wordtable").deleteRow(1)) // Delete the input row
     }
 
     // shuffle the word list
     shuffle = () => {
-        this.setState({words: this.state.words.sort(function () {return Math.random() - 0.5 })})
+        this.setState({ words: this.state.words.sort(function () { return Math.random() - 0.5 }) })
     }
 
     render() {
@@ -156,16 +158,16 @@ class LearnSetComponent extends React.Component {
 
         // Learning Methods Links
         const Links =
-        <div className="grid-align">
-            { 
-            this.state.words.length === 0 ? null :              // check if atleast 1 word in list
-                <div className="links">
-                    <Link className="hover-size" to={"/" + this.state.id + "/answer"} state={{ ...this.state }}>Answer Mode</Link>
-                    <Link className="hover-size" to={"/" + this.state.id + "/cards"} state={{ ...this.state }}>Cards Mode</Link>
-                    <Link className="hover-size" onClick={this.shuffle}>Mischeln</Link>
-                </div>
-            }
-        </div>
+            <div className="grid-align">
+                {
+                    this.state.words.length === 0 ? null :              // check if atleast 1 word in list
+                        <div className="links">
+                            <Link className="hover-size" to={"/" + this.state.id + "/answer"} state={{ ...this.state }}>Answer Mode</Link>
+                            <Link className="hover-size" to={"/" + this.state.id + "/cards"} state={{ ...this.state }}>Cards Mode</Link>
+                            <Link className="hover-size" onClick={this.shuffle}>Mischeln</Link>
+                        </div>
+                }
+            </div>
 
         // Words rows
         const Words = this.state.words.map((e, i) => {
@@ -198,7 +200,7 @@ class LearnSetComponent extends React.Component {
 
         return (
             <div className="content">
-                <LearnSetInfo learnSet={learnSet} classNames="clear"/>
+                <LearnSetInfo learnSet={learnSet} classNames="clear" />
                 {Links}
                 {Table}
             </div>
